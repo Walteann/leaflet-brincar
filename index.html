@@ -1,0 +1,276 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
+    <title>Document</title>
+
+    <style>
+        #mapid {
+            height: 500px;
+            width: 700px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="mapid"></div>
+
+    <script>
+        var mymap = L.map('mapid').setView([45.48565, -122.801742], 13);
+
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 30,
+            id: 'mapbox.streets',
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(mymap);
+
+
+        // var marker = L.marker([51.5 , -0.09]).addTo(mymap);
+
+        // var circle = L.circle([51.508, -0.11], {
+        //     color: 'lightblue',
+        //     fillcolor: 'red',
+        //     fillOpacity: 0.5,
+        //     radius: 500
+        // }).addTo(mymap);
+
+        var polygon = L.polygon([
+            [45.48565, -122.801742],
+            [45.60491, -122.801742],
+            [45.60491, -122.584762],
+            [45.48565, -122.584762],
+            [45.48565, -122.801742]
+        ]).addTo(mymap);
+
+        var polygon2 = L.polygon([
+            [ 45.535693 , -122.520217],
+            [45.553967 , -122.64038],
+            [ 45.526554 , -122.720031],
+            [ 45.507309 , -122.669906],
+            [ 45.446643 , -122.723464],
+            [ 45.408574 , -122.532577],
+            [ 45.477466 , -122.487258],
+            [ 45.535693 , -122.520217]
+        ]).addTo(mymap);
+
+
+        // marker.bindPopup(`
+        //     <b>Hello World</b>
+        //     <br>
+        //     Eu sou um popup
+        
+        // `).openPopup();
+
+        // circle.bindPopup('I sou um circle');
+        // polygon.bindPopup('Eu sou um poligono');
+
+        // var popup = L.popup()
+        //                     .setLatLng([51.5, -0.09])
+        //                     .setContent('Eu sou um popup padrão')
+        //                     .openOn(mymap);
+
+        function onMapClick(e) {
+            // popup.setLatLng(e.latlng)
+            //     .setContent('Você clicou no mapa em ' + e.latlng)
+            //     .openOn(mymap);
+
+            console.log(polygon.getBounds().intersects(polygon2.getBounds()));
+        }
+
+        mymap.on('click', onMapClick);
+
+    </script>
+
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="" />
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
+
+    <script src="https://npmcdn.com/leaflet-geometryutil"></script>
+
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+    <style>
+        #mapid {
+            width: 40vw;
+            height: 350px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="mapid"></div>
+
+    <script>
+
+        var mymap = L.map('mapid').setView([53.524288635294795,
+            -2.29888916015625], 13);
+
+        var arrayPolylines = []
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(mymap);
+
+        var polygon = L.polygon([
+            [
+                53.524288635294795,
+                -2.29888916015625
+            ],
+            [
+                53.52204348475871,
+                -2.2990608215332027
+            ],
+            [
+                53.52214553963732,
+                -2.293567657470703
+            ],
+            [
+                53.52469683169874,
+                -2.2925376892089844
+            ],
+            [
+                53.524288635294795,
+                -2.29888916015625
+            ]
+        ]).addTo(mymap);
+
+        var marker1 = L.marker([
+            53.524288635294795,
+            -2.29888916015625
+        ]).addTo(mymap)
+
+        var marker2 = L.marker([
+            53.53204348475871,
+            -2.2990608215332027
+        ]).addTo(mymap)
+
+
+        console.log(diferencaEntreDistancia(-2.29888916015625, -2.2925376892089844)),
+
+
+            teste(polygon._latlngs[0][0], polygon._latlngs[0][1])
+
+
+        function teste(array1, array2) {
+
+
+            let latitude1 = array1.lat;
+            let longitude1 = array1.lng;
+
+            let latitude2 = array2.lat;
+            let longitude2 = array2.lng;
+
+            let auxL1 = 0;
+            let auxL2 = 0;
+
+
+
+
+            let incremento = 0;
+            for (let i = 0; i < 20; i++) {
+
+                auxL1 = longitude1
+                longitude1 = auxL1 + incremento
+
+                auxL2 = longitude2
+                longitude2 = auxL2 + incremento
+
+                let polinhas = L.polyline([
+                    [
+                        latitude1 + +('00.01111000000000'),
+                        longitude1
+                    ],
+                    [
+                        latitude2 - +('00.01111000000000'),
+                        longitude2
+                    ]
+                ], {
+                        color: 'green', weight: 2
+                    }).addTo(mymap)
+
+                arrayPolylines.push(polinhas)
+
+                incremento = 0.000423431396484375;
+            }
+        }
+
+
+
+
+        function diferencaEntreDistancia(valorInicial, valorFinal) {
+            let diferenca = valorFinal - valorInicial
+            console.log(tiraDeXPorcento(diferenca))
+
+        }
+
+        function tiraDeXPorcento(valor) {
+            return valor / 15
+        }
+
+
+        // console.log(polygon.getBounds().intersests(arrayPolylines[0].getBounds()))
+
+        // var poly1 = turf.polygon([[
+        //     [-122.801742, 45.48565],
+        //     [-122.801742, 45.60491],
+        //     [-122.584762, 45.60491],
+        //     [-122.584762, 45.48565],
+        //     [-122.801742, 45.48565]
+        // ]]);
+
+        // var poly2 = turf.polygon([[
+        //     [-122.520217, 45.535693],
+        //     [-122.64038, 45.553967],
+        //     [-122.720031, 45.526554],
+        //     [-122.669906, 45.507309],
+        //     [-122.723464, 45.446643],
+        //     [-122.532577, 45.408574],
+        //     [-122.487258, 45.477466],
+        //     [-122.520217, 45.535693]
+        // ]]);
+
+        // var intersection = turf.intersect(poly1, poly2);
+
+        // console.log(intersection)
+
+
+
+    </script>
+
+</body>
+
+</html>
