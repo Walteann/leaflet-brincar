@@ -145,7 +145,31 @@
             accessToken: 'your.mapbox.access.token'
         }).addTo(mymap);
 
-        var polygon = L.polygon([
+        // var polygon = L.polygon([
+        //     [
+        //         53.524288635294795,
+        //         -2.29888916015625
+        //     ],
+        //     [
+        //         53.52204348475871,
+        //         -2.2990608215332027
+        //     ],
+        //     [
+        //         53.52214553963732,
+        //         -2.293567657470703
+        //     ],
+        //     [
+        //         53.52469683169874,
+        //         -2.2925376892089844
+        //     ],
+        //     [
+        //         53.524288635294795,
+        //         -2.29888916015625
+        //     ]
+        // ]).addTo(mymap);
+
+
+        var polyline = L.polyline([
             [
                 53.524288635294795,
                 -2.29888916015625
@@ -153,93 +177,95 @@
             [
                 53.52204348475871,
                 -2.2990608215332027
-            ],
-            [
-                53.52214553963732,
-                -2.293567657470703
-            ],
-            [
-                53.52469683169874,
-                -2.2925376892089844
-            ],
-            [
-                53.524288635294795,
-                -2.29888916015625
             ]
-        ]).addTo(mymap);
-
-        var marker1 = L.marker([
-            53.524288635294795,
-            -2.29888916015625
         ]).addTo(mymap)
 
-        var marker2 = L.marker([
-            53.53204348475871,
-            -2.2990608215332027
-        ]).addTo(mymap)
+        // console.log(polygon)
+
+        // console.log(polygon.toGeoJSON());
+
+        // var marker1 = L.marker([
+        //     53.524288635294795,
+        //     -2.29888916015625
+        // ]).addTo(mymap)
+
+        // var marker2 = L.marker([
+        //     53.53204348475871,
+        //     -2.2990608215332027
+        // ]).addTo(mymap)
 
 
-        console.log(diferencaEntreDistancia(-2.29888916015625, -2.2925376892089844)),
+        // console.log(diferencaEntreDistancia(-2.29888916015625, -2.2925376892089844));
+
+        // var polylineTeste = L.polyline([
+        //     [53.5353986352948, -2.2984657287597656],
+        //     [53.51093348475871, -2.2986373901367183]
+        // ]).addTo(mymap)
+        // teste(polygon._latlngs[0][0], polygon._latlngs[0][1])
+        // console.log(poly)
+
+        //  var intersection = turf.lineIntersect(polygon.toGeoJSON(), polylineTeste.toGeoJSON());
+
+        // console.log(intersection)
 
 
-            teste(polygon._latlngs[0][0], polygon._latlngs[0][1])
+        // function teste(array1, array2) {
 
 
-        function teste(array1, array2) {
+        //     let latitude1 = array1.lat;
+        //     let longitude1 = array1.lng;
 
+        //     let latitude2 = array2.lat;
+        //     let longitude2 = array2.lng;
 
-            let latitude1 = array1.lat;
-            let longitude1 = array1.lng;
-
-            let latitude2 = array2.lat;
-            let longitude2 = array2.lng;
-
-            let auxL1 = 0;
-            let auxL2 = 0;
-
-
-
-
-            let incremento = 0;
-            for (let i = 0; i < 20; i++) {
-
-                auxL1 = longitude1
-                longitude1 = auxL1 + incremento
-
-                auxL2 = longitude2
-                longitude2 = auxL2 + incremento
-
-                let polinhas = L.polyline([
-                    [
-                        latitude1 + +('00.01111000000000'),
-                        longitude1
-                    ],
-                    [
-                        latitude2 - +('00.01111000000000'),
-                        longitude2
-                    ]
-                ], {
-                        color: 'green', weight: 2
-                    }).addTo(mymap)
-
-                arrayPolylines.push(polinhas)
-
-                incremento = 0.000423431396484375;
-            }
-        }
+        //     let auxL1 = 0;
+        //     let auxL2 = 0;
 
 
 
 
-        function diferencaEntreDistancia(valorInicial, valorFinal) {
-            let diferenca = valorFinal - valorInicial
-            console.log(tiraDeXPorcento(diferenca))
+        //     let incremento = 0;
+        //     for (let i = 0; i < 20; i++) {
 
-        }
+        //         auxL1 = longitude1
+        //         longitude1 = auxL1 + incremento
 
-        function tiraDeXPorcento(valor) {
-            return valor / 15
-        }
+        //         auxL2 = longitude2
+        //         longitude2 = auxL2 + incremento
+
+        //         let polinhas = L.polyline([
+        //             [
+        //                 latitude1 + +('00.01111000000000'),
+        //                 longitude1
+        //             ],
+        //             [
+        //                 latitude2 - +('00.01111000000000'),
+        //                 longitude2
+        //             ]
+        //         ], {
+        //                 color: 'green', weight: 2
+        //             }).addTo(mymap)
+
+        //         arrayPolylines.push(polinhas)
+
+        //         incremento = 0.000423431396484375;
+
+        //     }
+
+        // }
+
+
+
+
+        // function diferencaEntreDistancia(valorInicial, valorFinal) {
+        //     let diferenca = valorFinal - valorInicial
+        //     console.log(tiraDeXPorcento(diferenca))
+
+        // }
+
+        // function tiraDeXPorcento(valor) {
+        //     return valor / 15
+        // }
 
 
         // console.log(polygon.getBounds().intersests(arrayPolylines[0].getBounds()))
@@ -263,11 +289,26 @@
         //     [-122.520217, 45.535693]
         // ]]);
 
-        // var intersection = turf.intersect(poly1, poly2);
+        // quantosPontos()
+
+            // console.log(polygon)
+            // console.log(arrayPolylines[1])
+        // function quantosPontos() {
+        //     arrayPolylines.forEach(element =>   {
+        //         console.log(element)
+        //     })
+
+        // }
+
+        // function depois(array) {
+
+        // var intersection = turf.lineIntersect(polygon, array[0]);
 
         // console.log(intersection)
+        // }
 
 
+            
 
     </script>
 
