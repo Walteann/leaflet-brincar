@@ -146,12 +146,13 @@
         var polylinesParalelas = []
         var pontosInterceptados = []
         var markerG
-        var distanciaEntrePalelalas = 20
+        var distanciaEntrePalelalas = 7
         iniciar(polygon)
         iniciar(polygon2)
         iniciar(polygon3)
 
         function iniciar(oPoligono) {
+
 
             var bounds = Object.values(oPoligono.getBounds())
 
@@ -165,8 +166,8 @@
             var pointLatlng1 = mymap.latLngToLayerPoint(L.latLng([oPoligono._latlngs[0][0].lat, oPoligono._latlngs[0][0].lng]))
             var pointLatlng2 = mymap.latLngToLayerPoint(L.latLng([oPoligono._latlngs[0][1].lat, oPoligono._latlngs[0][1].lng]))
 
-            // console.log(pointLatlng1)
-            // console.log(pointLatlng2)
+            console.log(pointLatlng1)
+            console.log(pointLatlng2)
 
 
             gerarPolylines(
@@ -186,6 +187,9 @@
             // console.log(bound1)
             // console.log(bound2)
 
+            let pontoHorizontal1 = ponto1
+            let pontoHorizontal2 = ponto2
+
 
             // quem é maior Y ?
             let maiorY = bound1.y > bound2.y ? bound1.y : bound2.y
@@ -202,7 +206,7 @@
             ponto2.y = ponto2.y + (maiorY - menorY)
 
             // isso é fazer que com que o ponto fique paralelo e 90º ao primeiro
-            ponto2.x = ponto1.x
+            ponto2.x = ponto1.x - 120
 
             // gerar negativa fora da area PRECISA DE UM CONDICIONAL AQUI
             // for (let j = 0; j < (maiorX + menorX); j++) {
@@ -243,6 +247,9 @@
 
                 polylinesParalelas.push(markerG)
             }
+
+            // adiciona retas paralelas horizontalmente..
+
 
             // console.log(polylinesParalelas)
             buscarIntercecao(polygonoGerado, polylinesParalelas)
@@ -301,32 +308,49 @@
 
             let variavelAuxiliar
 
-            for (let i = 1; i < novoArrayPoint.length; i++) {
+            // for (let i = 1; i < novoArrayPoint.length; i++) {
+            //     if (novoArrayPoint[i + 1]) {
+            //         if (novoArrayPoint[i].x === novoArrayPoint[i + 1].x && novoArrayPoint[i - 1].y < novoArrayPoint[i].y) {
+            //             variavelAuxiliar = novoArrayPoint[i];
+            //             novoArrayPoint[i] = novoArrayPoint[i + 1];
+            //             novoArrayPoint[i + 1] = variavelAuxiliar
+            //         }
+            //         //  else if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
+            //         //     // variavelAuxiliar = novoArrayPoint[i];
+            //         //     // novoArrayPoint[i] = novoArrayPoint[i + 1];
+            //         //     // novoArrayPoint[i + 1] = variavelAuxiliar
+            //         // }
+            //         //  else if (novoArrayPoint[i].x === novoArrayPoint[i+1].x && novoArrayPoint[i+1].y > novoArrayPoint[i].y) {
+            //         //     variavelAuxiliar = novoArrayPoint[i];
+            //         //     novoArrayPoint[i] = novoArrayPoint[i-1];
+            //         //     novoArrayPoint[i-1] = variavelAuxiliar
+            //         // }
+            //         // } else if(novoArrayPoint[i].x < novoArrayPoint[i-1].x) {
+            //         //     variavelAuxiliar = novoArrayPoint[i];
+            //         //     novoArrayPoint[i] = novoArrayPoint[i-1];
+            //         //     novoArrayPoint[i-1] = variavelAuxiliar
+            //         // } else if(novoArrayPoint[i].x > novoArrayPoint[i+1].x) {
+            //         //     variavelAuxiliar = novoArrayPoint[i];
+            //         //     novoArrayPoint[i] = novoArrayPoint[i+1];
+            //         //     novoArrayPoint[i+1] = variavelAuxiliar
+            //         // }
+            //     }
+            // }
+
+            for (let i = 1; i < novoArrayPoint.length; i = i + 4) {
                 if (novoArrayPoint[i + 1]) {
-                    if (novoArrayPoint[i].x === novoArrayPoint[i + 1].x && novoArrayPoint[i - 1].y < novoArrayPoint[i].y) {
+                    // if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
                         variavelAuxiliar = novoArrayPoint[i];
                         novoArrayPoint[i] = novoArrayPoint[i + 1];
                         novoArrayPoint[i + 1] = variavelAuxiliar
-                    } else if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
-                        // variavelAuxiliar = novoArrayPoint[i];
-                        // novoArrayPoint[i] = novoArrayPoint[i + 1];
-                        // novoArrayPoint[i + 1] = variavelAuxiliar
-                    }
-                    //  else if (novoArrayPoint[i].x === novoArrayPoint[i+1].x && novoArrayPoint[i+1].y > novoArrayPoint[i].y) {
-                    //     variavelAuxiliar = novoArrayPoint[i];
-                    //     novoArrayPoint[i] = novoArrayPoint[i-1];
-                    //     novoArrayPoint[i-1] = variavelAuxiliar
                     // }
-                    // } else if(novoArrayPoint[i].x < novoArrayPoint[i-1].x) {
+                    //  else if (novoArrayPoint[i].y < novoArrayPoint[i + 1].y) {
                     //     variavelAuxiliar = novoArrayPoint[i];
-                    //     novoArrayPoint[i] = novoArrayPoint[i-1];
-                    //     novoArrayPoint[i-1] = variavelAuxiliar
-                    // } else if(novoArrayPoint[i].x > novoArrayPoint[i+1].x) {
-                    //     variavelAuxiliar = novoArrayPoint[i];
-                    //     novoArrayPoint[i] = novoArrayPoint[i+1];
-                    //     novoArrayPoint[i+1] = variavelAuxiliar
+                    //     novoArrayPoint[i] = novoArrayPoint[i - 1];
+                    //     novoArrayPoint[i - 1] = variavelAuxiliar
                     // }
                 }
+
             }
 
             let jaFormatado = []
