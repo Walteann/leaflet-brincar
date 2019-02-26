@@ -146,7 +146,7 @@
         var polylinesParalelas = []
         var pontosInterceptados = []
         var markerG
-        var distanciaEntrePalelalas = 7
+        var distanciaEntrePalelalas = 30
         iniciar(polygon)
         iniciar(polygon2)
         iniciar(polygon3)
@@ -206,7 +206,7 @@
             ponto2.y = ponto2.y + (maiorY - menorY)
 
             // isso é fazer que com que o ponto fique paralelo e 90º ao primeiro
-            ponto2.x = ponto1.x - 120
+            ponto2.x = ponto1.x + 70
 
             // gerar negativa fora da area PRECISA DE UM CONDICIONAL AQUI
             // for (let j = 0; j < (maiorX + menorX); j++) {
@@ -337,12 +337,34 @@
             //     }
             // }
 
-            for (let i = 1; i < novoArrayPoint.length; i = i + 4) {
+            novoArrayPoint.sort()
+
+            for (let i = 0; i < novoArrayPoint.length; i = i + 4) {
                 if (novoArrayPoint[i + 1]) {
-                    // if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
-                        variavelAuxiliar = novoArrayPoint[i];
+
+                    variavelAuxiliar = novoArrayPoint[i];
                         novoArrayPoint[i] = novoArrayPoint[i + 1];
                         novoArrayPoint[i + 1] = variavelAuxiliar
+                    // if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
+
+                    // if (novoArrayPoint[i - 1]) {
+
+                    //     if (novoArrayPoint[i].y < novoArrayPoint[i - 1].y && novoArrayPoint[i].y > novoArrayPoint[i + 1].y) {
+
+                    //         variavelAuxiliar = novoArrayPoint[i];
+                    //         novoArrayPoint[i] = novoArrayPoint[i - 1];
+                    //         novoArrayPoint[i - 1] = variavelAuxiliar
+
+                    //     } else {
+                    //         variavelAuxiliar = novoArrayPoint[i];
+                    //         novoArrayPoint[i] = novoArrayPoint[i + 1];
+                    //         novoArrayPoint[i + 1] = variavelAuxiliar
+                    //     }
+                    // } else {
+                    //     variavelAuxiliar = novoArrayPoint[i];
+                    //     novoArrayPoint[i] = novoArrayPoint[i + 1];
+                    //     novoArrayPoint[i + 1] = variavelAuxiliar
+                    // }
                     // }
                     //  else if (novoArrayPoint[i].y < novoArrayPoint[i + 1].y) {
                     //     variavelAuxiliar = novoArrayPoint[i];
@@ -399,6 +421,15 @@
             //     // console.log(latlgsTeste[i][0].toString().substr(0,6))
             // }
             // console.log(latlgsTeste)
+
+            jaFormatado.forEach(element => {
+
+                let teste = L.marker(element).addTo(mymap);
+                teste.bindPopup(`${mymap.latLngToLayerPoint(element)}`)
+
+            });
+
+
 
             var polinhaaa = L.polyline(jaFormatado, {
                 color: 'green'
