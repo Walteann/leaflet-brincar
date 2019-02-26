@@ -121,6 +121,25 @@
             ]
         ]).addTo(mymap);
 
+        var pontosZigzag = [
+            [53.524289, -2.298889],
+            [53.5220462251957, -2.298889],
+            [53.522062313671945, -2.298031],
+            [53.52434411950874, -2.298031],
+            [53.524399239017484, -2.297173],
+            [53.52207840214819, -2.297173],
+            [53.52209450937557, -2.296314],
+            [53.52445442276807, -2.296314],
+            [53.52450954227681, -2.295456],
+            [53.52211059785181, -2.295456],
+            [53.52212668632805, -2.294598],
+            [53.52456466178555, -2.294598],
+            [53.52461984553614, -2.293739],
+            [53.52214279355543, -2.293739],
+            [53.52384749223301, -2.292881],
+            [53.52467496504488, -2.292881]
+        ]
+
 
         // Pega o Limite do Polygono
 
@@ -129,6 +148,7 @@
         var markerG
         var distanciaEntrePalelalas = 20
         iniciar(polygon)
+        iniciar(polygon2)
         iniciar(polygon3)
 
         function iniciar(oPoligono) {
@@ -145,8 +165,8 @@
             var pointLatlng1 = mymap.latLngToLayerPoint(L.latLng([oPoligono._latlngs[0][0].lat, oPoligono._latlngs[0][0].lng]))
             var pointLatlng2 = mymap.latLngToLayerPoint(L.latLng([oPoligono._latlngs[0][1].lat, oPoligono._latlngs[0][1].lng]))
 
-            console.log(pointLatlng1)
-            console.log(pointLatlng2)
+            // console.log(pointLatlng1)
+            // console.log(pointLatlng2)
 
 
             gerarPolylines(
@@ -197,7 +217,7 @@
             //     // }).addTo(mymap);
             // }
 
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < (maiorX - menorX); j++) {
 
                 // distancia entre retas parelelas
                 ponto1.x = ponto1.x - distanciaEntrePalelalas
@@ -210,7 +230,7 @@
             }
 
             // gerar polylines dentro da area
-            for (let i = 0; i < (maiorX - menorX) + 14; i++) {
+            for (let i = 0; i < (maiorX - menorX) + (maiorX - menorX) + 4; i++) {
 
                 // distancia entre retas parelelas
                 ponto1.x = ponto1.x + distanciaEntrePalelalas
@@ -252,7 +272,7 @@
         // precisa melhorar isso daqui...
         function mostrarNovaPolyline(arrayDePontosInterceptados) {
 
-            console.log(arrayDePontosInterceptados)
+            // console.log(arrayDePontosInterceptados)
 
             let latlgsTeste = []
 
@@ -261,16 +281,110 @@
                     latlgsTeste.push([teste[1], teste[0]])
                 }
             })
-            console.log(latlgsTeste)
+            // console.log(latlgsTeste)
+            mudaArray(latlgsTeste)
 
-            var polinhaaa = L.polyline(latlgsTeste, {
+        }
+
+        function mudaArray(latlgsTeste) {
+
+            // console.log(latlgsTeste)
+
+            let novoArrayPoint = []
+
+            latlgsTeste.forEach(latlag => {
+                var point = mymap.latLngToLayerPoint(latlag);
+                novoArrayPoint.push(point)
+            });
+
+            console.log(novoArrayPoint)
+
+            let variavelAuxiliar
+
+            for (let i = 1; i < novoArrayPoint.length; i++) {
+                if (novoArrayPoint[i + 1]) {
+                    if (novoArrayPoint[i].x === novoArrayPoint[i + 1].x && novoArrayPoint[i - 1].y < novoArrayPoint[i].y) {
+                        variavelAuxiliar = novoArrayPoint[i];
+                        novoArrayPoint[i] = novoArrayPoint[i + 1];
+                        novoArrayPoint[i + 1] = variavelAuxiliar
+                    } else if (novoArrayPoint[i - 1].y > novoArrayPoint[i].y) {
+                        // variavelAuxiliar = novoArrayPoint[i];
+                        // novoArrayPoint[i] = novoArrayPoint[i + 1];
+                        // novoArrayPoint[i + 1] = variavelAuxiliar
+                    }
+                    //  else if (novoArrayPoint[i].x === novoArrayPoint[i+1].x && novoArrayPoint[i+1].y > novoArrayPoint[i].y) {
+                    //     variavelAuxiliar = novoArrayPoint[i];
+                    //     novoArrayPoint[i] = novoArrayPoint[i-1];
+                    //     novoArrayPoint[i-1] = variavelAuxiliar
+                    // }
+                    // } else if(novoArrayPoint[i].x < novoArrayPoint[i-1].x) {
+                    //     variavelAuxiliar = novoArrayPoint[i];
+                    //     novoArrayPoint[i] = novoArrayPoint[i-1];
+                    //     novoArrayPoint[i-1] = variavelAuxiliar
+                    // } else if(novoArrayPoint[i].x > novoArrayPoint[i+1].x) {
+                    //     variavelAuxiliar = novoArrayPoint[i];
+                    //     novoArrayPoint[i] = novoArrayPoint[i+1];
+                    //     novoArrayPoint[i+1] = variavelAuxiliar
+                    // }
+                }
+            }
+
+            let jaFormatado = []
+            novoArrayPoint.forEach(latlag => {
+                var point = mymap.layerPointToLatLng(latlag);
+                jaFormatado.push(point)
+            });
+
+            // var aux;
+            // for (let i = 0; i < latlgsTeste.length; i++) {
+
+            //     if (latlgsTeste[i][0].toString().substr(0, 6) === latlgsTeste[i + 1][0].toString().substr(0, 6) && latlgsTeste[i + 1]) {
+            //         aux = latlgsTeste[i]
+            //             latlgsTeste[i][0] = latlgsTeste[i + 1][0]
+            //             latlgsTeste[i][1] = latlgsTeste[i + 1][1]
+            //             latlgsTeste[i + 1][0] = aux[0]
+            //             latlgsTeste[i + 1][1] = aux[1]
+            //             aux = null
+            //     }
+
+            //     else if (latlgsTeste[i + 1]) {
+            //         if (latlgsTeste[i + 2]) {
+            //             if (latlgsTeste[i][0].toString().substr(0, 6) !== latlgsTeste[i + 1][0].toString().substr(0, 6)) {
+
+
+            //                 console.log('aconteceu')
+            //                 aux = latlgsTeste[i + 1]
+            //                 latlgsTeste[i + 1][0] = latlgsTeste[i + 2][0]
+            //                 latlgsTeste[i + 1][1] = latlgsTeste[i + 2][1]
+            //                 latlgsTeste[i + 2][0] = aux[0]
+            //                 latlgsTeste[i + 2][1] = aux[1]
+            //                 aux = null
+
+            //             }
+
+            //         } else if( latlgsTeste[i][0].toString().substr(0, 6) === latlgsTeste[i + 1][0].toString().substr(0, 6)) {
+            //             console.log('teste')
+            //             aux = latlgsTeste[i]
+            //             latlgsTeste[i][0] = latlgsTeste[i + 1][0]
+            //             latlgsTeste[i][1] = latlgsTeste[i + 1][1]
+            //             latlgsTeste[i + 1][0] = aux[0]
+            //             latlgsTeste[i + 1][1] = aux[1]
+            //             aux = null
+            //         }
+            //     }
+            //     // console.log(latlgsTeste[i][0].toString().substr(0,6))
+            // }
+            // console.log(latlgsTeste)
+
+            var polinhaaa = L.polyline(jaFormatado, {
                 color: 'green'
             }).addTo(mymap)
 
             polylinesParalelas = []
             pontosInterceptados = []
-
         }
+
+
 
 
 
